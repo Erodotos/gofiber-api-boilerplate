@@ -1,7 +1,6 @@
 package database
 
 import (
-	"errors"
 	"log"
 	"os"
 
@@ -12,7 +11,7 @@ import (
 )
 
 var (
-	db *gorm.DB
+	DB *gorm.DB
 )
 
 // connectDb
@@ -34,31 +33,12 @@ func init() {
 	}
 
 	log.Println("connected")
-	db = database
+	DB = database
 
 	autoMigrate()
 }
 
 func autoMigrate() {
 
-	db.AutoMigrate(&models.Book{})
-}
-
-func InsertOne(data interface{}) error {
-	if result := db.Create(data); result.Error != nil {
-		return errors.New("Database Insertion Error")
-	}
-	return nil
-}
-
-func FindOne() {
-
-}
-
-func UpdateOne() {
-
-}
-
-func Delete() {
-
+	DB.AutoMigrate(&models.Book{})
 }
