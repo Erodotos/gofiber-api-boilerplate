@@ -9,6 +9,6 @@ func BookRouter(app *fiber.App) {
 	bookGroup := app.Group("/api")
 	bookGroup.Get("/book/:id", handlers.ReadBook)
 	bookGroup.Post("/book/", handlers.CreateBook)
-	bookGroup.Patch("/book/:id", handlers.UpdateBook)
+	bookGroup.Put("/book/:id", handlers.UpdateBook)
 	bookGroup.Delete("/book/:id", handlers.DeleteBook)
 }

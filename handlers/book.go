@@ -16,7 +16,7 @@ func CreateBook(c *fiber.Ctx) error {
 	}
 
 	if result := database.DB.Create(&book); result.Error != nil {
-		return errors.New("Database Insertion Error")
+		return errors.New("error creating new book")
 	}
 
 	c.Status(201)
@@ -29,7 +29,7 @@ func ReadBook(c *fiber.Ctx) error {
 	result_book := new(models.Book)
 
 	if result := database.DB.First(&result_book, book_id); result.Error != nil {
-		return errors.New("Database Selection Error")
+		return errors.New("error finding book")
 	}
 
 	c.SendStatus(200)
@@ -37,7 +37,24 @@ func ReadBook(c *fiber.Ctx) error {
 }
 
 func UpdateBook(c *fiber.Ctx) error {
-	return c.SendString(string(c.Body()))
+	book_id := c.Params("id")
+
+	result_book := new(models.Book)
+
+	if result := database.DB.First(&result_book, book_id); result.Error != nil {
+		return errors.New("error finding book")
+	}
+
+	if err := c.BodyParser(&result_book); err != nil {
+		return c.Status(500).SendString(err.Error())
+	}
+
+	if result := database.DB.Save(result_book); result.Error != nil {
+		return errors.New("error updating book")
+	}
+
+	c.SendStatus(200)
+	return c.JSON(result_book)
 }
 
 func DeleteBook(c *fiber.Ctx) error {

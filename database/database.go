@@ -19,6 +19,7 @@ func init() {
 
 	// refer https://github.com/go-sql-driver/mysql#dsn-data-source-name for details
 	dsn := "root:1234@tcp(127.0.0.1:3306)/learn-go?charset=utf8mb4&parseTime=True&loc=Local"
+
 	/*
 		NOTE:
 		To handle time.Time correctly, you need to include parseTime as a parameter. (more parameters)
