@@ -33,6 +33,16 @@ func ReadBook(c *fiber.Ctx) error {
 	return c.Status(200).JSON(common.Response{Result: result_book})
 }
 
+func ReadAllBooks(c *fiber.Ctx) error {
+	books := []models.Book{}
+
+	if result := database.DB.Find(&books); result.Error != nil {
+		return c.Status(404).JSON(common.Response{Error: result.Error.Error()})
+	}
+
+	return c.Status(200).JSON(common.Response{Result: books})
+}
+
 func UpdateBook(c *fiber.Ctx) error {
 	book_id := c.Params("id")
 

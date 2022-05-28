@@ -33,13 +33,11 @@ func init() {
 		os.Exit(2)
 	}
 
-	log.Println("connected")
 	DB = database
 
 	autoMigrate()
 }
 
 func autoMigrate() {
-
 	DB.AutoMigrate(&models.Book{})
 }
