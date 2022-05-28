@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"errors"
-
 	"github.com/erodotos/gofiber-api-boilerplate/common"
 	"github.com/erodotos/gofiber-api-boilerplate/database"
 	"github.com/erodotos/gofiber-api-boilerplate/models"
@@ -13,15 +11,14 @@ func CreateBook(c *fiber.Ctx) error {
 	book := new(models.Book)
 
 	if err := c.BodyParser(book); err != nil {
-		return c.Status(500).SendString(err.Error())
+		return c.Status(400).JSON(common.Response{Error: err.Error()})
 	}
 
 	if result := database.DB.Create(&book); result.Error != nil {
-		return errors.New("error creating new book")
+		return c.Status(500).JSON(common.Response{Error: result.Error.Error()})
 	}
 
-	c.Status(201)
-	return c.JSON(book)
+	return c.Status(201).JSON(common.Response{Result: book})
 }
 
 func ReadBook(c *fiber.Ctx) error {
@@ -30,11 +27,10 @@ func ReadBook(c *fiber.Ctx) error {
 	result_book := new(models.Book)
 
 	if result := database.DB.First(&result_book, book_id); result.Error != nil {
-		return errors.New("error finding book")
+		return c.Status(404).JSON(common.Response{Error: result.Error.Error()})
 	}
 
-	c.SendStatus(200)
-	return c.JSON(result_book)
+	return c.Status(200).JSON(common.Response{Result: result_book})
 }
 
 func UpdateBook(c *fiber.Ctx) error {
