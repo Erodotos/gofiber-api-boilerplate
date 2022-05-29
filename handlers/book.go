@@ -18,7 +18,7 @@ func CreateBook(c *fiber.Ctx) error {
 		return c.Status(500).JSON(common.Response{Error: result.Error.Error()})
 	}
 
-	return c.Status(201).JSON(common.Response{Result: book})
+	return c.Status(201).JSON(common.Response{Message: book})
 }
 
 func ReadBook(c *fiber.Ctx) error {
@@ -30,7 +30,7 @@ func ReadBook(c *fiber.Ctx) error {
 		return c.Status(404).JSON(common.Response{Error: result.Error.Error()})
 	}
 
-	return c.Status(200).JSON(common.Response{Result: result_book})
+	return c.Status(200).JSON(common.Response{Message: result_book})
 }
 
 func ReadAllBooks(c *fiber.Ctx) error {
@@ -40,7 +40,7 @@ func ReadAllBooks(c *fiber.Ctx) error {
 		return c.Status(404).JSON(common.Response{Error: result.Error.Error()})
 	}
 
-	return c.Status(200).JSON(common.Response{Result: books})
+	return c.Status(200).JSON(common.Response{Message: books})
 }
 
 func UpdateBook(c *fiber.Ctx) error {
@@ -63,7 +63,7 @@ func UpdateBook(c *fiber.Ctx) error {
 		return c.Status(500).JSON(common.Response{Error: result.Error.Error()})
 	}
 
-	return c.Status(200).JSON(common.Response{Result: result_book})
+	return c.Status(200).JSON(common.Response{Message: result_book})
 }
 
 func DeleteBook(c *fiber.Ctx) error {
@@ -73,5 +73,5 @@ func DeleteBook(c *fiber.Ctx) error {
 		return c.Status(500).JSON(common.Response{Error: result.Error.Error()})
 	}
 
-	return c.Status(200).JSON(common.Response{Result: "success"})
+	return c.Status(200).JSON(common.Response{Message: "success"})
 }

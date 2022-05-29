@@ -1,6 +1,6 @@
 package common
 
 type Response struct {
-	Result interface{}
+	Message interface{}
 	Error  string
 }

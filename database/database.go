@@ -1,9 +1,12 @@
 package database
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"strconv"
 
+	"github.com/erodotos/gofiber-api-boilerplate/config"
 	"github.com/erodotos/gofiber-api-boilerplate/models"
 
 	"gorm.io/driver/mysql"
@@ -17,27 +20,21 @@ var (
 // connectDb
 func init() {
 
-	// refer https://github.com/go-sql-driver/mysql#dsn-data-source-name for details
-	dsn := "root:1234@tcp(127.0.0.1:3306)/learn-go?charset=utf8mb4&parseTime=True&loc=Local"
-
-	/*
-		NOTE:
-		To handle time.Time correctly, you need to include parseTime as a parameter. (more parameters)
-		To fully support UTF-8 encoding, you need to change charset=utf8 to charset=utf8mb4. See this article for a detailed explanation
-	*/
-
-	database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	var err error
+	p := config.Config("DB_PORT")
+	port, _ := strconv.ParseUint(p, 10, 32)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local", config.Config("DB_USER"), config.Config("DB_PASSWORD"), config.Config("DB_HOST"), port, config.Config("DB_NAME"))
+	fmt.Println(dsn)
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		log.Fatal("Failed to connect to database. \n", err)
 		os.Exit(2)
 	}
 
-	DB = database
-
 	autoMigrate()
 }
 
 func autoMigrate() {
-	DB.AutoMigrate(&models.Book{})
+	DB.AutoMigrate(&models.Book{}, &models.User{})
 }
