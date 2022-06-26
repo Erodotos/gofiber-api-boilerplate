@@ -36,5 +36,5 @@ func init() {
 }
 
 func autoMigrate() {
-	DB.AutoMigrate(&models.Book{}, &models.User{})
+	DB.AutoMigrate(&models.Book{})
 }
